@@ -8,59 +8,40 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class UserFav(Base):
-    __tablename__ = 'userfav'
-    id = Column(Integer, ForeignKey('user.id'), primary_key=True)
-    user_id = Column(Integer)
-    name = Column(String(30))
-
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    username = Column(Integer, nullable=False)
-    password = Column(String(25))
-    email = Column(String(30))
-    userfav = relationship(UserFav)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    password= Column(String(250), nullable=False)
 
 class Planet(Base):
-    __tablename__ = 'planet'
+    __tablename__ = 'Planet'
+    id=Column(Integer, primary_key=True)
+    name=Column(String(250), nullable=False)
+    climate=Column(String(250), nullable=False)
+    population=Column(Integer, nullable=False)
+    orbital_period=Column(Integer, nullable=False)
+    rotation_period=Column(Integer, nullable=False)
+    diameter=Column(Integer, nullable=False)
+
+class Character(Base):
+    __tablename__ = 'Character'
+    id=Column(Integer, primary_key=True)
+    name=Column(String(250), nullable=False)
+    birth=Column(String(250), nullable=False)
+    gender=Column(String(250))
+    height=Column(Integer, nullable=False)
+    skin=Column(String(250), nullable=False)
+    eye=Column(String(250), nullable=False)
+
+class Favorite(Base):
+    __tablename__ = 'Favorite'
     id = Column(Integer, primary_key=True)
-    planet_name = Column(String(30))
-    rotation_period = Column(Integer)
-    orbital_period = Column(Integer)
-    diameter = Column(Integer)
-    climate = Column(String(30))
-    gravity = Column(String(30))
-    terrain = Column(String(30))
-    population = Column(Integer)
-    
-class People(Base):
-    __tablename__ = 'people'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30))
-    height = Column(Integer)
-    mass = Column(Integer)
-    hair_color = Column(String(30))
-    skin_color = Column(String(30))
-    eye_color = Column(String(30))
-    birth_year = Column(String(30))
-    gender = Column(String(30))
-
-class Vehicle(Base):
-    __tablename__ = 'vehicle'
-    id = Column(Integer, primary_key=True)
-    vehicle_name = Column(String(30))
-    model = Column(Integer)
-    passenger = Column(Integer)
-    consumable = Column(String(30))
-    starship_class = Column(String(30))
-    lenght = Column(Integer)
-    cargo_capacity = Column(Integer)
-    hyperdrive_rating = Column(Integer)
-
-
-    def to_dict(self):
-        return {}
-
+    user_id=Column(Integer, ForeignKey('User.id'))
+    planet_id=Column(Integer, ForeignKey('Planet.id'))
+    character_id=Column(Integer, ForeignKey('Character.id'))
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
